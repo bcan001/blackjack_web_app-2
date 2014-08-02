@@ -1,0 +1,47 @@
+
+
+<h2> <%=session[:player_name]%>, welcome to blackjack! </h2>
+
+<p> the player has </p>
+<%= session[:player_cards] %>
+
+
+<% session[:player_cards].each do |card| %>
+			<%= card_image(card) %>
+<% end %>
+
+and has a total of <%= calculate_total(session[:player_cards]) %>
+
+
+
+<p> the dealer has </p>
+<%= session[:dealer_cards] %>
+
+<% session[:dealer_cards].each do |card| %>
+			<%= card_image(card) %>
+<% end %>
+
+and has a total of <%= calculate_total(session[:dealer_cards]) %>
+
+
+<h3>
+What would you like to do?
+</h3>
+
+<% if @show_hit_or_stay_buttons %>
+	<form id="hit_form" action="/game/player/hit" method='post'>
+		<input type="submit" class="btn btn-success" value="Hit" />
+	</form>
+	<form id="stay_form" action="/game/player/stay" method='post'>
+		<input type="submit" class="btn btn-warning" value="Stay" />
+	</form>
+<% end %>
+
+
+<% if @show_dealer_hit_button %>
+	<form id="hit_form" action="/game/dealer/hit" method='post'>
+		<input type="submit" class="btn btn-success" value="dealer will pick a card" />
+	</form>
+<% end %>
+
+
