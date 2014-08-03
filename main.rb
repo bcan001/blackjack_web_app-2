@@ -51,7 +51,7 @@ helpers do
 	def chip_total(chips)
 		chips = chips.to_i
 		# sum each value in total
-		# return chips WON/lost instead
+		# return chips WON/lost
 		chips_won_or_lost = chips.to_i
 		return chips_won_or_lost
 	end
@@ -64,6 +64,7 @@ before do
 		@show_hit_or_stay_buttons = false
 		@show_replay_buttons = true
 		@error = "You\'re out of chips! Starting Over ..."
+		session[:chips] = 1000
 	end
 end
 
@@ -146,6 +147,7 @@ post '/game/player/stay' do
 end
 
 get '/game/dealer' do
+
 	@show_hit_or_stay_buttons = false
 	# calculate when dealer busts, decision tree
 	dealer_total = calculate_total(session[:dealer_cards])
@@ -163,13 +165,26 @@ get '/game/dealer' do
 		session[:chips] = session[:chips].to_i + chip_total(session[:player_bet])
 	elsif dealer_total < 17 && dealer_total < player_total
 		@show_dealer_hit_button = true
-		@show_replay_buttons = true
+		@show_replay_buttons = false
 	elsif dealer_total >= 17 && dealer_total > player_total && dealer_total < 21
 		redirect '/game/dealerwins'
+	elsif dealer_total == player_total && dealer_total >=17 && dealer_total < 21
+		@show_dealer_hit_button = false
+		@show_replay_buttons = true
+		@success = "#{session[:player_name]} and the dealer have tied!"
+		session[:chips] = session[:chips].to_i
 	else
+		# go to post to make dealer hit
 		redirect '/game/dealer/hit'
 	end
 	
+	erb :game
+end
+
+get '/game/dealer/hit' do
+	@show_replay_buttons = false
+	@show_hit_or_stay_buttons = false
+	@show_dealer_hit_button = true
 	erb :game
 end
 
