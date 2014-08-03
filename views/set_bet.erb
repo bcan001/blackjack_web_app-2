@@ -1,8 +1,8 @@
-<div class="container">
-	<h3> How much would you like to bet? You have <%= session[:chips] %> chips</h3>
+<div class="well">
+	<h3> How much would you like to bet? You have <%= session[:chips] %> chips left! </h3>
 
 	<form action="/setbet" method="post">
 	  Bet Amount: <input type="text" name='player_bet'/>
-	  <input type="submit" class='btn'/>
+	  <input id="bet_button" type="submit" class='btn'/>
 	</form>
 </div>

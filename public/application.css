@@ -1,0 +1,31 @@
+form#hit_form {
+	float:left;
+	margin-right:10px;
+}
+
+form#stay_form {
+	float:left;
+}
+
+form#play_form {
+	float:left;
+	margin-right:10px;
+}
+
+form#restart_form {
+	float:left;
+}
+
+img.card_img {
+	margin: 0px 10px 10px 0px;
+}
+
+
+
+input#name_button {
+	margin: 0px 10px 10px 0px;
+}
+
+input#bet_button {
+	margin: 0px 10px 10px 0px;
+}

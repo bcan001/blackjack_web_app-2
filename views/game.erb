@@ -1,70 +1,70 @@
 
 <div id='game'>
+	<div class='well'>
+		<h2> <%=session[:player_name]%>, welcome to blackjack! </h2>
+	</div>
+	<p> You have bet <%= session[:player_bet] %> chips this round</p>
+	<p> You have <%= chip_total(session[:chips]) %> chips left </p>
 
-<h2> <%=session[:player_name]%>, welcome to blackjack! </h2>
+	<div class='well' id='player_area'>
 
-<p> You have <%= chip_total(session[:chips]) %> chips left </p>
+		<!--<a id='player_color' href='#'> change to red </a>-->
 
+		<p> <%=session[:player_name]%> has a total of <%= calculate_total(session[:player_cards]) %></p>
 
-<div class='well' id='player_area'>
-
-	<!--<a id='player_color' href='#'> change to red </a>-->
-
-	<p> <%=session[:player_name]%> has a total of <%= calculate_total(session[:player_cards]) %></p>
-
-	<% session[:player_cards].each do |card| %>
-				<%= card_image(card) %>
-	<% end %>
-</div>
-
-<div class='well' id='dealer_area'>
-
-	<% if @show_hit_or_stay_buttons %>
-		<p> The dealer has:</p>
-	<% else %>
-		<p> The dealer has a total of <%= calculate_total(session[:dealer_cards]) %></p>
-	<% end %>
-
-	<% if @show_hit_or_stay_buttons %>
-		<%= card_image(session[:dealer_cards][0]) %>
-		<img src='/images/cards/cover.jpg' class='card_image'>
-	<% else %>
-		<% session[:dealer_cards].each do |card| %>
-			<%= card_image(card) %>
+		<% session[:player_cards].each do |card| %>
+					<%= card_image(card) %>
 		<% end %>
-	<% end %>
+	</div>
 
-</div>
+	<div class='well' id='dealer_area'>
 
-<% if @show_hit_or_stay_buttons %>
-	<h3> What would you like to do? </h3>
-<% end %>
+		<% if @show_hit_or_stay_buttons %>
+			<p> The dealer has:</p>
+		<% else %>
+			<p> The dealer has a total of <%= calculate_total(session[:dealer_cards]) %></p>
+		<% end %>
 
-<div class='well' id='choice_buttons'>
+		<% if @show_hit_or_stay_buttons %>
+			<%= card_image(session[:dealer_cards][0]) %>
+			<img src='/images/cards/cover.jpg' class='card_image'>
+		<% else %>
+			<% session[:dealer_cards].each do |card| %>
+				<%= card_image(card) %>
+			<% end %>
+		<% end %>
+
+	</div>
+
 	<% if @show_hit_or_stay_buttons %>
-		<form id="hit_form" action="/game/player/hit" method='post'>
-			<input type="submit" class="btn btn-success" value="Hit" />
-		</form>
-		<form id="stay_form" action="/game/player/stay" method='post'>
-			<input type="submit" class="btn btn-warning" value="Stay" />
-		</form>
+		<h3> What would you like to do? </h3>
 	<% end %>
 
-	<% if @show_dealer_hit_button %>
-		<form id="hit_dealer_form" action="/game/dealer/hit" method='post'>
-			<input type="submit" class="btn btn-success" value="Dealer will pick a card" />
-		</form>
-	<% end %>
+	<div class='well' id='choice_buttons'>
 
+		<% if @show_hit_or_stay_buttons %>
+			<form id="hit_form" action="/game/player/hit" method='post'>
+				<input type="submit" class="btn btn-success" value="Hit" />
+			</form>
+			<form id="stay_form" action="/game/player/stay" method='post'>
+				<input type="submit" class="btn btn-warning" value="Stay" />
+			</form>
+		<% end %>
 
-	<% if @show_replay_buttons %>
-		<form id="play_form" action="/deal" method='get'>
-			<input type="submit" class="btn btn-success" value="Keep Playing" />
-		</form>
-		<form id="restart_form" action="/" method='get'>
-			<input type="submit" class="btn btn-warning" value="Restart Game" />
-		</form>
-	<% end %>
-</div>
+		<% if @show_dealer_hit_button %>
+			<form id="hit_dealer_form" action="/game/dealer/hit" method='post'>
+				<input type="submit" class="btn btn-success" value="Dealer will pick a card" />
+			</form>
+		<% end %>
 
+		<% if @show_replay_buttons %>
+			<form id="play_form" action="/deal" method='get'>
+				<input type="submit" class="btn btn-success" value="Keep Playing" />
+			</form>
+			<form id="restart_form" action="/" method='get'>
+				<input type="submit" class="btn btn-warning" value="Restart Game" />
+			</form>
+		<% end %>
+
+	</div>
 </div>
