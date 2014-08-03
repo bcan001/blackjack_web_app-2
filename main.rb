@@ -55,17 +55,25 @@ helpers do
 		chips_won_or_lost = chips.to_i
 		return chips_won_or_lost
 	end
+
+	def check_chip_count(chip_stack)
+		if chip_stack <= 0
+			chip_stack = 1000
+		end
+		return chip_stack
+	end
+
 end
 
 before do
 	@show_hit_or_stay_buttons = true
-	if session[:chips] <= 0
-		@show_dealer_hit_button = false
-		@show_hit_or_stay_buttons = false
-		@show_replay_buttons = true
-		@error = "You\'re out of chips! Starting Over ..."
-		session[:chips] = 1000
-	end
+	#if session[:chips] <= 0
+	#	@show_dealer_hit_button = false
+	#	@show_hit_or_stay_buttons = false
+	#	@show_replay_buttons = true
+	#	@error = "You\'re out of chips! Starting Over ..."
+	#	session[:chips] = 1000
+	#end
 end
 
 get '/' do
@@ -85,8 +93,8 @@ get '/deal' do
 	session[:dealer_cards] << session[:deck].pop
 	session[:player_cards] << session[:deck].pop
 
-	# chips you have left is start value chips MINUS what you've bet
-	# session[:chips_left] = STARTCHIPS - session[:player_bet]
+	# if you're broke, updates back to 1000 chips
+	session[:chips] = check_chip_count(session[:chips])
 
 	redirect '/newplayer'
 end
@@ -113,6 +121,7 @@ end
 
 get '/game' do
 	# decision tree
+		
 	player_total = calculate_total(session[:player_cards])
 
 	if player_total == 21
@@ -130,7 +139,7 @@ get '/game' do
 		@show_hit_or_stay_buttons = false
 
 		session[:chips] = session[:chips].to_i - chip_total(session[:player_bet])
-		
+
 	end
 	erb :game
 end

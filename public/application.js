@@ -44,27 +44,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(document).on('click','#hit_dealer_form input'), function() {
-		$.ajax({
-			type: 'GET',
-			url: '/game/dealer/hit'
-			//data: {}
-		}).done(function(msg) {
-			$('#game').replaceWith(msg);
-		});
-		return false;
-	});
-
-	$(document).on('click','#hit_dealer_form input'), function() {
-		$.ajax({
-			type: 'GET',
-			url: '/game/dealerwins'
-			//data: {}
-		}).done(function(msg) {
-			$('#game').replaceWith(msg);
-		});
-		return false;
-	});
 
 });
 
