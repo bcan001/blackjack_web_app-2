@@ -1,9 +1,8 @@
 require 'rubygems'
 require 'sinatra'
-#require 'pry'
+require 'pry'
 
 set :sessions, true
-
 
 helpers do
 	def calculate_total(cards)
@@ -62,18 +61,10 @@ helpers do
 		end
 		return chip_stack
 	end
-
 end
 
 before do
 	@show_hit_or_stay_buttons = true
-	#if session[:chips] <= 0
-	#	@show_dealer_hit_button = false
-	#	@show_hit_or_stay_buttons = false
-	#	@show_replay_buttons = true
-	#	@error = "You\'re out of chips! Starting Over ..."
-	#	session[:chips] = 1000
-	#end
 end
 
 get '/' do
@@ -95,7 +86,6 @@ get '/deal' do
 
 	# if you're broke, updates back to 1000 chips
 	session[:chips] = check_chip_count(session[:chips])
-
 	redirect '/newplayer'
 end
 
@@ -115,31 +105,29 @@ end
 post '/setbet' do
 	#set how much a person wants to bet for the round
 	session[:player_bet] = params[:player_bet]
-	
-	redirect '/game'
+	if session[:player_bet].to_i > 0
+		redirect '/game'
+	else
+		redirect '/setbet'
+	end	
 end
 
 get '/game' do
-	# decision tree
-		
+	# decision tree		
 	player_total = calculate_total(session[:player_cards])
 
 	if player_total == 21
 		@show_hit_or_stay_buttons = false
 		@show_replay_buttons = true
 		@success = "Congratulations! #{session[:player_name]} has Blackjack!"
-
 		session[:chips] = session[:chips].to_i + chip_total(session[:player_bet])
-
 	elsif player_total < 21
 		@show_hit_or_stay_buttons = true
 	elsif player_total > 21
 		@show_replay_buttons = true
 		@error = "Sorry, it looks like #{session[:player_name]} busted."
 		@show_hit_or_stay_buttons = false
-
 		session[:chips] = session[:chips].to_i - chip_total(session[:player_bet])
-
 	end
 	erb :game
 end
@@ -186,7 +174,6 @@ get '/game/dealer' do
 		# go to post to make dealer hit
 		redirect '/game/dealer/hit'
 	end
-	
 	erb :game
 end
 
@@ -212,5 +199,3 @@ get '/game/dealerwins' do
 	session[:chips] = session[:chips].to_i - chip_total(session[:player_bet])
 	erb :game
 end
-
-
