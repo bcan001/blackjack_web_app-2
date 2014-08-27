@@ -1,14 +1,5 @@
 $(document).ready(function() {
 
-	//$('#player_color').click(function() {
-	//	$('#player_area').css('background-color','red')
-	//	return false;
-	//});
-
-	//$('#hit_form input').click(function() {
-		//alert('hit button clicked!');
-
-	// makes player hit button ajaxified
 	$(document).on('click','#hit_form input'), function() {
 		$.ajax({
 			type: 'POST',
@@ -43,7 +34,6 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-
 
 });
 
